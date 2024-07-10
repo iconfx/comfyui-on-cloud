@@ -10,6 +10,8 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-py311_24.5.0-0-Linux-x86_64.
 chmod +x Miniconda3-py311_24.5.0-0-Linux-x86_64.sh
 ./Miniconda3-py311_24.5.0-0-Linux-x86_64.sh -b -p $HOME/miniconda3
 ~/miniconda3/bin/conda init bash
+
+source .bashrc
 source .bashrc
 # confirm GPU is attached
 lspci | grep -i nvidia
