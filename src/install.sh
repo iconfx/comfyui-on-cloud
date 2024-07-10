@@ -88,7 +88,6 @@ Type=simple
 ExecStart=${comfy_ui_dir}/run_the_server.sh
 
 
-
 [Install]
 WantedBy=multi-user.target"
 

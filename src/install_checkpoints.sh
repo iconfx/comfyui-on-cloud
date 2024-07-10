@@ -13,7 +13,6 @@ wget -c https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resol
 #sd_xl_base_1.0_0.9vae
 wget https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0_0.9vae.safetensors -P ./models/checkpoints/
 
-
 # v1-5-pruned
 wget https://huggingface.co/runwayml/stable-diffusion-v1-5/blob/main/v1-5-pruned.safetensors -P ./models/checkpoints/
 
