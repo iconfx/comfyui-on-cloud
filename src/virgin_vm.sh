@@ -12,7 +12,6 @@ chmod +x Miniconda3-py311_24.5.0-0-Linux-x86_64.sh
 ~/miniconda3/bin/conda init bash
 
 source .bashrc
-source .bashrc
 # confirm GPU is attached
 lspci | grep -i nvidia
 # confirm GPU not recognized
@@ -26,6 +25,7 @@ sudo cp /var/cuda-repo-ubuntu2004-12-2-local/cuda-*-keyring.gpg /usr/share/keyri
 sudo apt-get update
 sudo apt-get -y install cuda
 
+source .bashrc
 source .bashrc
 pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
 echo -e "import torch\nprint(torch.cuda.is_available())\nprint(torch.cuda.get_device_name(0))" > test_cuda.py
