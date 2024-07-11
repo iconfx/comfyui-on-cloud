@@ -1,33 +1,42 @@
 #!/bin/bash
 
+# Update and upgrade the system
 sudo apt-get update
 sudo apt-get --assume-yes upgrade
-sudo apt-get --assume-yes install software-properties-common
-sudo apt-get --assume-yes install jq
-sudo apt-get --assume-yes install build-essential
-sudo apt-get --assume-yes install linux-headers-$(uname -r)
+
+# Install necessary packages
+sudo apt-get --assume-yes install software-properties-common jq build-essential linux-headers-$(uname -r)
+
+# Install Miniconda
 wget https://repo.anaconda.com/miniconda/Miniconda3-py311_24.5.0-0-Linux-x86_64.sh
 chmod +x Miniconda3-py311_24.5.0-0-Linux-x86_64.sh
 ./Miniconda3-py311_24.5.0-0-Linux-x86_64.sh -b -p $HOME/miniconda3
 ~/miniconda3/bin/conda init bash
 
-source .bashrc
-# confirm GPU is attached
-lspci | grep -i nvidia
-# confirm GPU not recognized
-nvidia-smi
-# install nvidia drivers and CUDA
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
-sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
-wget https://developer.download.nvidia.com/compute/cuda/12.1.0/local_installers/cuda-repo-ubuntu2204-12-1-local_12.1.0-530.30.02-1_amd64.deb
-sudo dpkg -i cuda-repo-ubuntu2204-12-1-local_12.1.0-530.30.02-1_amd64.deb
-sudo cp /var/cuda-repo-ubuntu2204-12-1-local/cuda-*-keyring.gpg /usr/share/keyrings/
-sudo apt-get update
-sudo apt-get -y install cuda
+# Source bashrc to ensure conda is available
+source ~/.bashrc
 
-source .bashrc
-source .bashrc
-pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
+# Check GPU attachment
+echo "Checking GPU attachment:"
+lspci | grep -i nvidia
+
+# Install CUDA 12.2
+wget https://developer.download.nvidia.com/compute/cuda/12.2.2/local_installers/cuda_12.2.2_535.104.05_linux.run
+sudo sh cuda_12.2.2_535.104.05_linux.run --silent --toolkit --driver
+
+# Set up CUDA environment variables
+echo 'export PATH=/usr/local/cuda-12.2/bin${PATH:+:${PATH}}' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify CUDA installation
+nvidia-smi
+nvcc --version
+
+# Install PyTorch with CUDA support
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# Test CUDA availability in PyTorch
 echo -e "import torch\nprint(torch.cuda.is_available())\nprint(torch.cuda.get_device_name(0))" > test_cuda.py
 python test_cuda.py
 
